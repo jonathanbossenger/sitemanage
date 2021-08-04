@@ -7,8 +7,9 @@ SSL_CERTS_DIRECTORY=/home/jonathan/ssl-certs
 SITES_DIRECTORY=/home/jonathan/development/websites
 
 SITE_NAME=$1
+MYSQL_DATABASE=$(echo $SITE_NAME | sed 's/[^a-zA-Z0-9]//g')
 SITE_CONFIG_PATH=/etc/apache2/sites-available/$SITE_NAME.conf
-SSL_SITE_CONFIG_PATH=/etc/apache2/sites-enabled/$SITE_NAME-ssl.conf
+SSL_SITE_CONFIG_PATH=/etc/apache2/sites-available/$SITE_NAME-ssl.conf
 
 echo "Deleteing websites directory"
 
@@ -30,7 +31,7 @@ sed -i "/$SITE_NAME.test/d" /etc/hosts
 
 echo "Deleting database.."
 
-mysql -uroot -ppassword --execute="DROP DATABASE $SITE_NAME;"
+mysql -uroot -ppassword --execute="DROP DATABASE $MYSQL_DATABASE;"
 
 echo "Deleting certs.."
 
